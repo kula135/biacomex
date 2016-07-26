@@ -1,21 +1,23 @@
 @extends('layout.master')
 
-@section('title', 'edycja zamówienia')
+@section('title', ' - edycja zamówienia')
 
-@section('style')
+@section('styles')
+{{ Html::style('/css/jquery-ui.min.css') }}
 {{ Html::style('/css/modify.css') }}
 @endsection
 
 @section('content')
 <h1>Edycja zamówienia nr {{ $order->id }}</h1>
 @if (count($errors) > 0)
-  <div class="alert alert-danger">
-    <ul>
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
+<div class="alert alert-danger">
+  <h3>Formularz zawiera błędy:</h3>
+  <ul>
+	@foreach ($errors->all() as $error)
+	<li>{{ $error }}</li>
+	@endforeach
+  </ul>
+</div>
 @endif
 
 {{ Form::model($order, array('route' => array('orders.update', $order->id), 'method' => 'PUT')) }}
@@ -26,60 +28,58 @@
   <table>
     <tr>
       <td>
-        {{ Form::radio('private', 'no', true, array('id' => 'privateno', 'onclick' => "document.getElementById('company').style = 'display: block'")) }}
-        {{ Form::label('privateno', 'Firma', array('class' => 'inline')) }}
+        {{ Form::radio('private', '0', isset($order->company), ['id' => 'privateno', 'onclick' => "$('#company').show(1000); document.getElementsByName('nip')[0].required = true; document.getElementsByName('name')[0].required = true"]) }}
+        {{ Form::label('privateno', 'Firma', ['class' => 'inline']) }}
       </td>
       <td width="1%"></td>
       <td>
-        {{ Form::radio('private', 'yes', false, array('id' => 'privateno', 'onclick' => "document.getElementById('company').style = 'display: block'")) }}
-        {{ Form::label('privateyes', 'Osoba prywatna', array('class' => 'inline')) }}
+        {{ Form::radio('private', '1', !isset($order->company), ['id' => 'privateyes', 'onclick' => "$('#company').hide(1000); document.getElementsByName('nip')[0].required = false; document.getElementsByName('name')[0].required = false"]) }}
+        {{ Form::label('privateyes', 'Osoba prywatna', ['class' => 'inline']) }}
       </td>
     </tr>
   </table>
-  <div id="company">
-    {{ Form::label('nip', 'NIP') }}
-    {{ Form::text('nip') }}
+  <div id="company" style="display: {{ isset($order->company) ? 'block' : 'none' }}">
+    {{ Form::label('name', 'Nazwa firmy', ['class' => 'required']) }}
+    {{ Form::text('name', isset($order->company) ? $order->company->name : '', ['required' => true]) }}
 
-    {{ Form::label('name', 'Nazwa firmy') }}
-    {{ Form::text('name') }}
+    {{ Form::label('nip', 'NIP', ['class' => 'required']) }}
+    {{ Form::text('nip', isset($order->company) ? $order->company->nip : '', ['placeholder' => 'xxx-xxx-xx-xx', 'required' => isset($order->company)]) }}
 
     {{ Form::label('address', 'Adres') }}
-    {{ Form::text('address') }}
+    {{ Form::text('address', isset($order->company) ? $order->company->address : '') }}
 
     <table>
       <tr>
         <td width="30%">
           {{ Form::label('code', 'Kod pocztowy') }}
-          {{ Form::text('code') }}
+          {{ Form::text('code', isset($order->company) ? $order->company->code : '', ['placeholder' => 'xx-xxx']) }}
         </td>
         <td width="1%"></td>
         <td>
           {{ Form::label('city', 'Miejscowość') }}
-          {{ Form::text('city') }}
+          {{ Form::text('city', isset($order->company->city) ? $order->company->city->name : '') }}
         </td>
       </tr>
     </table>
     <h4>Osoba kontaktowa</h4>
   </div>
+  {{ Form::label('mail', 'Adres e-mail', ['class' => 'required']) }}
+  {{ Form::email('mail', $order->client->mail, ['required' => true]) }}
   <table>
     <tr>
       <td>
         {{ Form::label('firstname', 'Imię') }}
-        {{ Form::text('firstname') }}
+        {{ Form::text('firstname', $order->client->firstname) }}
       </td>
       <td width="1%"></td>
       <td>
         {{ Form::label('lastname', 'Nazwisko') }}
-        {{ Form::text('lastname') }}
+        {{ Form::text('lastname', $order->client->lastname) }}
       </td>
     </tr>
   </table>
-  {{ Form::label('mail', 'Adres e-mail', ['class' => 'required']) }}
-  {{ Form::email('mail', null, array('required' => true)) }}
-
-
   {{ Form::label('phone', 'Telefon') }}
-  {{ Form::tel('phone') }}
+  {{ Form::tel('phone', $order->client->phone) }}
 </fieldset>
 <fieldset>
   <legend>Trasa</legend>
@@ -87,17 +87,17 @@
     <tr>
       <td>
         {{ Form::label('tripfrom', 'Z', ['class' => 'required']) }}
-        {{ Form::text('tripfrom', null, array('required' => true)) }}
+        {{ Form::text('tripfrom', $order->tripfrom->name, ['required' => true]) }}
       </td>
       <td width="1%"></td>
       <td>
         {{ Form::label('tripto', 'Do', ['class' => 'required']) }}
-        {{ Form::text('tripto', null, array('required' => true)) }}
+        {{ Form::text('tripto', $order->tripto->name, ['required' => true]) }}
       </td>
     </tr>
   </table>
   {{ Form::label('distance', 'Dystans', ['class' => 'required']) }}
-  {{ Form::text('distance', null, array('required' => true)) }}
+  {{ Form::text('distance', null, ['required' => true]) }}
 
   {{ Form::label('tripinfo', 'Dodatkowe informacje') }}
   {{ Form::textarea('tripinfo') }}
@@ -108,12 +108,12 @@
     <tr>
       <td>
         {{ Form::label('datefrom', 'Od', ['class' => 'required']) }}
-        {{ Form::text('datefrom', null, array('required' => true)) }}
+        {{ Form::text('datefrom', null, ['id' => 'datefrom', 'placeholder' => 'dd/mm/rrrr', 'required' => true]) }}
       </td>
       <td width="1%"></td>
       <td>
         {{ Form::label('dateto', 'Do', ['class' => 'required']) }}
-        {{ Form::text('dateto', null, array('required' => true)) }}
+        {{ Form::text('dateto', null, ['id' => 'dateto', 'placeholder' => 'dd/mm/rrrr', 'required' => true]) }}
       </td>
     </tr>
   </table>
@@ -133,7 +133,7 @@
 <fieldset>
   <legend>Cena</legend>
   {{ Form::label('price', 'Całkowita', ['class' => 'required']) }}
-  {{ Form::text('price', null, array('required' => true)) }}
+  {{ Form::text('price', null, ['required' => true]) }}
 
   {{ Form::label('priceinfo', 'Szczegóły') }}
   {{ Form::textarea('priceinfo') }}
@@ -144,12 +144,12 @@
     <tr>
       <td>
         {{ Form::label('requestdate', 'Data otrzymania', ['class' => 'required']) }}
-        {{ Form::text('requestdate', null, array('required' => true)) }}
+        {{ Form::text('requestdate', null, ['id' => 'requestdate', 'placeholder' => 'dd/mm/rrrr', 'required' => true]) }}
       </td>
       <td width="1%"></td>
       <td>
         {{ Form::label('answerdate', 'Data odpowiedzi', ['class' => 'required']) }}
-        {{ Form::text('answerdate', null, array('required' => true)) }}
+        {{ Form::text('answerdate', null, ['id' => 'answerdate', 'placeholder' => 'dd/mm/rrrr', 'required' => true]) }}
       </td>
     </tr>
   </table>
@@ -159,4 +159,156 @@
 
 {{ Form::close() }}
 
+@endsection
+
+@section('scripts')
+{{ Html::script('/js/autosuggest.js') }}
+{{ Html::script('/js/jquery-ui.min.js') }}
+
+<script>
+  $(document).ready(function () {
+	if (document.getElementById('privateyes').checked === true) {
+	  $('#company').hide(0);
+	  document.getElementsByName('nip')[0].required = false;
+	  document.getElementsByName('name')[0].required = false;
+	}
+
+	findCity('city');
+	findCity('tripfrom');
+	findCity('tripto');
+
+	new bsn.AutoSuggest('name', companies);
+	new bsn.AutoSuggest('mail', clients);
+
+	$("#datefrom").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#dateto').datepicker("option", "minDate", selected);
+		if ($('#dateto').val() === '') {
+		  $('#dateto').val(selected);
+		}
+	  }
+	});
+
+	$("#dateto").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#datefrom').datepicker("option", "maxDate", selected);
+		if ($('#datefrom').val() === '') {
+		  $('#datefrom').val(selected);
+		}
+	  }
+	});
+
+	$("#requestdate").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#answerdate').datepicker("option", "minDate", selected);
+		if ($('#answerdate').val() === '') {
+		  $('#answerdate').val(selected);
+		}
+	  }
+	});
+
+	$("#answerdate").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#requestdate').datepicker("option", "maxDate", selected);
+		if ($('#requestdate').val() === '') {
+		  $('#requestdate').val(selected);
+		}
+	  }
+	});
+  });
+
+  function findCity(name) {
+	var options = {
+	  script: function (name) {
+		return "/cities/hint/" + name;
+	  },
+	  varname: "name",
+	  json: true,
+	  delay: 250,
+	  timeout: 5000,
+	  noresults: "Brak podpowiedzi, zostanie dodana nowa miejscowość"
+	};
+	new bsn.AutoSuggest(name, options);
+  }
+
+  function load_client(el) {
+	console.log(el);
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+	  if (xhttp.readyState == 4 && xhttp.status == 200 && xhttp.responseText != '') {
+		var data = JSON.parse(xhttp.responseText);
+		document.getElementsByName('firstname')[0].value = data['firstname'];
+		document.getElementsByName('lastname')[0].value = data['lastname'];
+		document.getElementsByName('mail')[0].value = data['mail'];
+		document.getElementsByName('phone')[0].value = data['phone'];
+	  }
+	};
+	xhttp.open("GET", "/clients/hint/id/" + el.value, true);
+	xhttp.send();
+  }
+
+  var companies = {
+	script: function (name) {
+	  return "/companies/hint/" + name;
+	},
+	varname: "name",
+	json: true,
+	delay: 250,
+	timeout: 5000,
+	noresults: "Brak podpowiedzi, zostanie dodana nowa firma",
+	callback: function (obj) {
+	  var data = JSON.parse(obj.id);
+	  document.getElementsByName('nip')[0].value = data['nip'];
+	  document.getElementsByName('address')[0].value = data['address'];
+	  document.getElementsByName('code')[0].value = data['code'];
+	  document.getElementsByName('city')[0].value = data['city'];
+
+	  var str = '<option value="" disabled selected>Wybierz ...</option>';
+	  if (data['clients'].length > 0) {
+		for (c in data['clients']) {
+		  str += "<option value='" + data['clients'][c]['id'] + "'>" + data['clients'][c]['name'] + "</option>";
+		}
+	  }
+
+	  document.getElementById('client_select').innerHTML = "<label>Wybierz pracownika firmy z listy lub uzupełnij dane poniżej</label><select onchange='load_client(this)'>" + str + "</select>";
+	}
+  };
+
+  var clients = {
+	script: function (mail) {
+	  return "/clients/hint/" + mail;
+	},
+	varname: "mail",
+	json: true,
+	delay: 250,
+	timeout: 5000,
+	noresults: "Brak podpowiedzi, zostanie dodany nowy klient",
+	callback: function (obj) {
+	  var data = JSON.parse(obj.id);
+	  document.getElementsByName('firstname')[0].value = data['firstname'];
+	  document.getElementsByName('lastname')[0].value = data['lastname'];
+	  document.getElementsByName('phone')[0].value = data['phone'];
+	}
+  };
+</script>
 @endsection

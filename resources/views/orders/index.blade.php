@@ -1,21 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'wszystkie zamówienia')
-
-@section('style')
-<script>
-
-  function ConfirmDelete()
-  {
-  var x = confirm("Czy na pewno chcesz usunąć to zlecenie?");
-  if (x)
-    return true;
-  else
-    return false;
-  }
-
-</script>
-@endsection
+@section('title', ' - wszystkie zamówienia')
 
 @section('content')
 <h1>Lista zleceń</h1>
@@ -33,10 +18,10 @@
       <th rowspan="2"></th>
     </tr>
     <tr>
-      <td>Z</td>
-      <td>Do</td>
-      <td>Od</td>
-      <td>Do</td>
+      <th>Z</th>
+      <th>Do</th>
+      <th>Od</th>
+      <th>Do</th>
     </tr>
   </thead>
   <tbody>
@@ -47,8 +32,8 @@
       @foreach($orders as $key => $value)
       <tr>
         <td>{{ $a++ }}.</td>
-        <td>{{ $value->tripfrom }}</td>
-        <td>{{ $value->tripto }}</td>
+        <td>{{ $value->tripfrom->name }}</td>
+        <td>{{ $value->tripto->name }}</td>
         <td>{{ $value->datefrom }}</td>
         <td>{{ $value->dateto }}</td>
         <td style="width: 212px;">
@@ -64,4 +49,19 @@
     @endif
   </tbody>
 </table>
+@endsection
+
+@section('scripts')
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("Czy na pewno chcesz usunąć to zlecenie?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
 @endsection

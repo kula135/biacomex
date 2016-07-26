@@ -1,79 +1,179 @@
+table {
+  width: 100%;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+/* ====== FORM ================================================================ */
+form select, input[type="text"], input[type="email"], input[type="tel"], textarea {
+  background-color: #e8eeef;
+  border: none;
+  color: #8a97a0;
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  padding: 10px;
+  width: 100%;
+}
+
+input[type="radio"] {
+  margin: 0 8px 10px 0;
+}
+
+textarea {
+  height: 170px;
+  resize: none;
+}
+
+input[type="submit"] {
+  background-color: #2c97e7;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px 40px;
+  text-align: center;
+  width: 100%;
+}
+
+input[type="submit"]:hover {
+  background-color: #0079bf;
+}
+
+fieldset {
+  margin-bottom: 10px;
+  border: none;
+}
+
+legend {
+  color: #2c97e7;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin: 0;
+}
+
+label.inline {
+  display: inline;
+}
+
+label.required:after {
+  color: red;
+  content: ' * ';
+}
+
+/* ====== DATE PICKER ================================================================ */
+select {
+  color: #2c97e7;
+}
+
+.ui-datepicker-title {
+  font-weight: normal;
+}
+
+/* ====== AUTOSUGGEST ================================================================ */
+div.autosuggest {
+  position: absolute;
+  background-color: #5c9ccc;
+  padding: 10px 0;
+  border-radius: 8px;
+}
+
+div.autosuggest ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+div.autosuggest ul li {
+  color: #ffffff;
+  text-align: left;
+}
+
+div.autosuggest ul li a {
+  color: #ffffff;
+  display: block;
+  text-decoration: none;
+  text-shadow: #000 0px 0px 5px;
+  position: relative;
+  padding: 0;
+  width: 100%;
+}
+div.autosuggest ul li a:hover {
+  background-color: #0079bf;
+}
+
+div.autosuggest ul li a span {
+  display: block;
+  padding: 3px 6px;
+  font-weight: bold;
+}
+
+div.autosuggest ul li a span small {
+  font-weight: normal;
+  color: #999;
+}
+
+div.autosuggest ul li.as_highlight a span small {
+  color: #ccc;
+}
+
+div.autosuggest ul li.as_highlight a {
+  color: #fff;
+  background-color: #1B5CCD;
+  background-image: url(img_inquisitor/hl_corner_br.gif);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+
+div.autosuggest ul li.as_highlight a span {
+  background-image: url(img_inquisitor/hl_corner_bl.gif);
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+div.autosuggest ul li a .tl,
+div.autosuggest ul li a .tr {
+  background-image: transparent;
+  background-repeat: no-repeat;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 0;
+  padding: 0;
+  margin: 0;
+}
+div.autosuggest ul li a .tr {
+  right: 0;
+}
+
+div.autosuggest ul li.as_highlight a .tl {
+  left: 0;
+  background-image: url(img_inquisitor/hl_corner_tl.gif);
+  background-position: bottom left;
+}
+
+div.autosuggest ul li.as_highlight a .tr {
+  right: 0;
+  background-image: url(img_inquisitor/hl_corner_tr.gif);
+  background-position: bottom right;
+}
 
 
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  textarea {
-    border: none;
-    font-size: 16px;
-    margin: 0 0 20px 0;
-    padding: 10px;
-    width: 100%;
-    background-color: #e8eeef;
-    color: #8a97a0;
-  }
 
-  input[type="radio"],
-  input[type="checkbox"] {
-    margin: 0 8px 10px 0;
-  }
+div.autosuggest ul li.as_warning {
+  font-weight: bold;
+  text-align: center;
+}
 
-  label.required:after {
-    content: ' * ';
-    color: red;
-  }
-
-  textarea {
-    resize: none;
-    height: 170px;
-  }
-  select {
-    padding: 6px;
-    height: 32px;
-    border-radius: 2px;
-  }
-
-  input[type="submit"] {
-    padding: 19px 39px 18px 39px;
-    color: #FFF;
-    background-color: #4bc970;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    font-style: normal;
-    border-radius: 5px;
-    width: 100%;
-    border: 1px solid #3ac162;
-    border-width: 1px 1px 3px;
-    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
-    margin-bottom: 10px;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #52b46f;
-  }
-
-  fieldset {
-    margin-bottom: 10px;
-    border: none;
-  }
-
-  legend {
-    font-size: 1.4em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #2ca02c;
-  }
-
-  label {
-    display: block;
-    margin: 0;
-  }
-
-  label.inline {
-    display: inline;
-  }
-
-  table {
-    width: 100%;
-  }
+div.autosuggest ul em {
+  font-style: normal;
+  color: #ffce3d;
+}

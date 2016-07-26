@@ -13,13 +13,13 @@ class Clients extends Migration {
   public function up() {
     Schema::create('clients', function(Blueprint $table) {
       $table->increments('id');
-      $table->unsignedInteger('companies_id')->nullable();
+      $table->unsignedInteger('company_id')->nullable();
       $table->string('firstname');
       $table->string('lastname');
-      $table->string('mail');
+      $table->string('mail')->unique();
       $table->string('phone')->nullable();
       $table->timestamps();
-      $table->foreign('companies_id')->references('id')->on('companies')->onDelete('cascade');
+      $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
     });
   }
 
