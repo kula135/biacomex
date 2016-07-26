@@ -10,8 +10,8 @@
     {{ isset($order->company) ? 'firma' : 'osoba prywatna' }}
   </legend>
   @if ($order->company)
-    <strong>NIP:</strong> {{ $order->company->nip }}<br>
     <strong>Nazwa firmy:</strong> {{ $order->company->name }}<br>
+    <strong>NIP:</strong> {{ $order->company->nip }}<br>
     <strong>Adres:</strong> {{ $order->company->address }} {{ ($order->company->code != '-') ? $order->company->code : '' }} {{ isset($order->company->city) ? $order->company->city->name : '' }}
 </fieldset>
 <fieldset>

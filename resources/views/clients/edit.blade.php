@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', ' - nowy klient')
+@section('title', ' - klient')
 
 @section('styles')
 {{ Html::style('/css/jquery-ui.min.css') }}
@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-<h1>Nowy klient</h1>
+<h1>{{$client->firstname}} {{$client->lastname}}</h1>
 @if (count($errors) > 0)
 <div class="alert alert-danger">
   <h3>Formularz zawiera błędy:</h3>
@@ -20,7 +20,7 @@
 </div>
 @endif
 
-{{ Form::open(array('url' => 'clients')) }}
+{{ Form::model($clients, array('route' => array('client.update', $client->id), 'method' => 'PUT')) }}
 {{ Form::token() }}
 
 <fieldset>
@@ -44,7 +44,7 @@
   {{ Form::tel('phone') }}
 </fieldset>
 
-{{ Form::submit('Zapisz') }}
+{{ Form::submit('Zaktualizuj') }}
 
 {{ Form::close() }}
 

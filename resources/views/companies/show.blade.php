@@ -1,67 +1,75 @@
 @extends('layout.master')
 
-@section('title', ' - zamówienie')
+@section('title', ' - firma')
+
+@section('scripts')
+<script>
+
+  function ConfirmDelete()
+  {
+  var x = confirm("Czy na pewno chcesz usunąć tego pracownika? Jeżeli do pracownika przypisane są jakieś zlecenia operacja nie powiedzie się.");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+
+</script>
+@endsection
 
 @section('content')
-<h1>Zamówienie nr {{ $order->id }}</h1>
+<h1>Firma {{ $company->name }}</h1>
 
 <fieldset>
-  <legend>Zamawiający - 
-    {{ isset($order->company) ? 'firma' : 'osoba prywatna' }}
-  </legend>
-  @if ($order->company)
-    <strong>NIP:</strong> {{ $order->company->nip }}<br>
-    <strong>Nazwa firmy:</strong> {{ $order->company->name }}<br>
-    <strong>Adres:</strong> {{ $order->company->address }} {{ ($order->company->code != '-') ? $order->company->code : '' }} {{ isset($order->company->city) ? $order->company->city->name : '' }}
+  <legend>Dane firmy</legend>
+    <strong>Nazwa firmy:</strong> {{ $company->name }}<br>
+    <strong>NIP:</strong> {{ $company->nip }}<br>
+    <strong>Adres:</strong> {{ $company->address }} {{ ($company->code != '-') ? $company->code : '' }} {{ isset($company->city) ? $company->city->name : '' }}
 </fieldset>
 <fieldset>
-  <legend>Osoba kontaktowa</legend>
-  @endif
-  <strong>Imię i nazwisko:</strong> {{ $order->client->firstname }} {{ $order->client->lastname }}<br>
-  <strong>Adres e-mail:</strong> <a href='mailto:{{ $order->client->mail }}'>{{ $order->client->mail }}</a><br>
-  <strong>Telefon:</strong> {{ $order->client->phone }}<br>
+  <legend>Pracownicy</legend>
+  <table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>L.p.</th>
+      <th>Imię i nazwisko</th>
+      <th>Adres e-mail</th>
+      <th>Telefon</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(count($company->clients) == 0)
+    <tr><td colspan="5">Brak pracownikow</td></tr>
+    @else
+      <?php $a=1; ?>
+      @foreach($company->clients as $client)
+      <tr>
+        <td>{{ $a++ }}.</td>
+        <td>{{ $client->firstname }} {{ $client->lastname }}</td>
+        <td><a href='mailto:{{ $client->mail }}'>{{ $client->mail }}</a></td>
+        <td>{{ $client->phone }}</td>
+        <td style="width: 140px;">
+          <a class="btn btn-small btn-warning" href="{{ URL::to('clients/' . $c->id . '/edit') }}">Edytuj</a>
+          {{ Form::open(array('url' => 'clients/' . $c->id, 'class' => 'pull-right', 'onsubmit' => 'return ConfirmDelete()')) }}
+            {{ Form::hidden('_method', 'DELETE') }}
+            {{ Form::submit('Usuń', array('class' => 'btn btn-danger')) }}
+          {{ Form::close() }}
+        </td>
+      </tr>
+      @endforeach
+    @endif
+  </tbody>
+</table>
 </fieldset>
-<fieldset>
-  <legend>Trasa</legend>
-  <strong>Z:</strong> {{ $order->tripfrom->name }}<br>
-  <strong>Do:</strong> {{ $order->tripto->name }}<br>
-  <strong>Dystans:</strong> {{ $order->distance }}<br>
-  <strong>Dodatkowe informacje:</strong> {!! nl2br(e($order->tripinfo)) !!}<br>
-</fieldset>
-<fieldset>
-  <legend>Data wyjazdu</legend>
-  <strong>Od:</strong> {{ $order->datefrom }}<br>
-  <strong>Do:</strong> {{ $order->dateto }}<br>
-</fieldset>
-<fieldset>
-  <legend>Szczegóły</legend>
-  {{ $order->description ?: '-' }}
-</fieldset>
-<fieldset>
-  <legend>Ilość osób</legend>
-  {{ $order->count ?: '-' }}
-</fieldset>
-<fieldset>
-  <legend>Środek transportu</legend>
-  {{ $order->vehicle ?: '-' }}
-</fieldset>
-<fieldset>
-  <legend>Cena</legend>
-  <strong>Całkowita:</strong> {{ $order->price }}<br>
-  <strong>Szczegóły:</strong> {!! nl2br(e($order->priceinfo)) !!}<br>
-</fieldset>
-<fieldset>
-  <legend>Zlecenie</legend>
-  <strong>Data otrzymania:</strong> {{ $order->requestdate }}<br>
-  <strong>Data odpowiedzi:</strong> {{ $order->answerdate }}<br>
-</fieldset>
+
 <ul class="pager">
   @if ($previous)
-  <li class="previous"><a href="/orders/{{ $previous }}">Poprzedni</a></li>
+  <li class="previous"><a href="/companies/{{ $previous }}">Poprzedni</a></li>
   @endif
-  <li><a class="next" href="{{ URL::to('orders/' . $order->id . '/edit') }}">Edytuj</a></li>
+  <li><a class="next" href="{{ URL::to('companies/' . $company->id . '/edit') }}">Edytuj</a></li>
   @if ($next)
-  <li class="next"><a href="/orders/{{ $next }}">Następny</a></li>
+  <li class="next"><a href="/companies/{{ $next }}">Następny</a></li>
   @endif
 </ul>
 @endsection

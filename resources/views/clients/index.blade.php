@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', ' - lista miast')
+@section('title', ' - lista klientów')
 
 @section('styles')
 {{ Html::style('/css/dataTables.bootstrap.min.css') }}
@@ -26,46 +26,47 @@
 @endsection
 
 @section('content')
-<h1>Lista miast</h1>
+<h1>Lista klientów</h1>
 @if (isset($message))
 <div class="alert alert-success">
   {{ $message }}
 </div>
 @endif
-<div class="tablewidth">
-  <table id="table" class="table table-striped table-bordered" style="max-width: 400px; margin: 0 auto;" >
-	<col style="width: 10%">
-	<col>
-	<col style="width: 15%">
-	<thead>
-	  <tr>
-		<th>L.p.</th>
-		<th>Nazwa</th>
-		<th></th>
-	  </tr>
-	</thead>
-	<tbody>
-	  @if(count($cities) == 0)
-	  <tr><td colspan="3">Brak miast</td></tr>
-	  @else
-	  <?php $a = 1; ?>
-	  @foreach($cities as $value)
-	  <tr>
-		<td>{{ $a++ }}.</td>
-		<td>{{ $value->name }}</td>
-		<td style="width: 212px;">
-		  <a class="btn btn-small btn-warning" href="{{ URL::to('cities/'.$value->id.'/edit') }}">Edytuj</a>
-		  {{ Form::open(array('url' => 'cities/' . $c->id, 'class' => 'pull-right', 'onsubmit' => 'return ConfirmDelete()')) }}
-		  {{ Form::hidden('_method', 'DELETE') }}
-		  {{ Form::submit('Usuń', array('class' => 'btn btn-danger')) }}
-		  {{ Form::close() }}
-		</td>
-	  </tr>
-	  @endforeach
-	  @endif
-	</tbody>
-  </table>
-</div>
+<table id="table" class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>L.p.</th>
+      <th>Imię i nazwisko</th>
+      <th>Adres e-mail</th>
+      <th>Telefon</th>
+      <th>Firma</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(count($clients) == 0)
+    <tr><td colspan="6">Brak klientów</td></tr>
+    @else
+	<?php $a = 1; ?>
+	@foreach($clients as $client)
+	<tr>
+	  <td>{{ $a++ }}.</td>
+	  <td>{{ $client->firstname }} {{ $client->lastname }}</td>
+	  <td><a href='mailto:{{ $client->mail }}'>{{ $client->mail }}</a></td>
+	  <td>{{ $client->phone }}</td>
+	  <td>{{ (isset($client->company) ? $client->company->name : '') }}</td>
+	  <td style="width: 140px;">
+		<a class="btn btn-small btn-warning" href="{{ URL::to('clients/' . $c->id . '/edit') }}">Edytuj</a>
+		{{ Form::open(array('url' => 'clients/' . $c->id, 'class' => 'pull-right', 'onsubmit' => 'return ConfirmDelete()')) }}
+		{{ Form::hidden('_method', 'DELETE') }}
+		{{ Form::submit('Usuń', array('class' => 'btn btn-danger')) }}
+		{{ Form::close() }}
+	  </td>
+	</tr>
+	@endforeach
+    @endif
+  </tbody>
+</table>
 @endsection
 
 @section('scripts')
@@ -102,7 +103,7 @@
   });
 
   function ConfirmDelete() {
-	var x = confirm("Czy na pewno chcesz usunąć te miasto? Jeżeli miasto jest gdzieś używane operacja nie powiedzie się.");
+	var x = confirm("Czy na pewno chcesz usunąć tego pracownika? Jeżeli do pracownika przypisane są jakieś zlecenia operacja nie powiedzie się.");
 	if (x)
 	  return true;
 	else
