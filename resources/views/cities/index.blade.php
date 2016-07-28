@@ -1,112 +1,77 @@
 @extends('layout.master')
 
-@section('title', ' - lista miast')
+@section('title', ' - miasta')
 
 @section('styles')
 {{ Html::style('/css/dataTables.bootstrap.min.css') }}
+{{ Html::style('/css/index.css') }}
 <style>
-  div.tablewidth {
-	max-width: 500px;
-	margin: 0 auto;
-  }
-
-  .table > tbody > tr > td, .table > tbody > tr > th {
-	vertical-align: middle;
-  }
-
-  .col-sm-7 {
-    width: 100%;
-  }
-
-  div.dataTables_wrapper div.dataTables_paginate {
-	text-align: center;
-  }
-
+  div.container { max-width: 550px; }
+  td:last-child { width: 130px; }
 </style>
 @endsection
 
 @section('content')
 <h1>Lista miast</h1>
-@if (isset($message))
-<div class="alert alert-success">
-  {{ $message }}
-</div>
+@if (isset($success))
+  <div class="alert alert-success">{{ $success }}</div>
+@elseif (isset($error))
+  <div class="alert alert-danger">{{ $error }}</div>
 @endif
-<div class="tablewidth">
-  <table id="table" class="table table-striped table-bordered" style="max-width: 400px; margin: 0 auto;" >
-	<col style="width: 10%">
-	<col>
-	<col style="width: 15%">
-	<thead>
-	  <tr>
-		<th>L.p.</th>
-		<th>Nazwa</th>
-		<th></th>
-	  </tr>
-	</thead>
-	<tbody>
-	  @if(count($cities) == 0)
+
+<table id="table" class="table table-striped table-bordered">
+  <thead>
+	<tr>
+	  <th>L.p.</th>
+	  <th>Nazwa</th>
+	  <th>Akcje</th>
+	</tr>
+  </thead>
+  <tbody>
+	@if(count($cities) == 0)
 	  <tr><td colspan="3">Brak miast</td></tr>
-	  @else
-	  <?php $a = 1; ?>
-	  @foreach($cities as $value)
-	  <tr>
-		<td>{{ $a++ }}.</td>
-		<td>{{ $value->name }}</td>
-		<td style="width: 212px;">
-		  <a class="btn btn-small btn-warning" href="{{ URL::to('cities/'.$value->id.'/edit') }}">Edytuj</a>
-		  {{ Form::open(array('url' => 'cities/' . $c->id, 'class' => 'pull-right', 'onsubmit' => 'return ConfirmDelete()')) }}
-		  {{ Form::hidden('_method', 'DELETE') }}
-		  {{ Form::submit('Usuń', array('class' => 'btn btn-danger')) }}
-		  {{ Form::close() }}
-		</td>
-	  </tr>
+	@else
+	  <?php $i = 1; ?>
+	  @foreach($cities as $c)
+		<tr>
+		  <td>{{ $i++ }}.</td>
+		  <td>{{ $c->name }}</td>
+		  <td>
+			<a class="btn btn-small btn-warning" href="{{ URL::to('cities/'.$c->id.'/edit') }}">Edytuj</a>
+			{{ Form::open(array('url' => 'cities/' . $c->id, 'class' => 'pull-right', 'onsubmit' => 'return ConfirmDelete()')) }}
+			{{ Form::hidden('_method', 'DELETE') }}
+			{{ Form::submit('Usuń', array('class' => 'btn btn-danger')) }}
+			{{ Form::close() }}
+		  </td>
+		</tr>
 	  @endforeach
-	  @endif
-	</tbody>
-  </table>
-</div>
+	@endif
+  </tbody>
+</table>
 @endsection
 
 @section('scripts')
 {{ Html::script('/js/jquery.dataTables.min.js') }}
 {{ Html::script('/js/dataTables.bootstrap.min.js') }}
-<script>
-  $(document).ready(function () {
-	$('#table').DataTable({
-	  "info": false,
-	  "bSort": false,
-	  "language": {
-		"processing": "Przetwarzanie...",
-		"search": "Szukaj:",
-		"lengthMenu": "Pokaż _MENU_ pozycji",
-		"info": "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-		"infoEmpty": "Pozycji 0 z 0 dostępnych",
-		"infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-		"infoPostFix": "",
-		"loadingRecords": "Wczytywanie...",
-		"zeroRecords": "Nie znaleziono pasujących pozycji",
-		"emptyTable": "Brak danych",
-		"paginate": {
-		  "first": "Pierwsza",
-		  "previous": "Poprzednia",
-		  "next": "Następna",
-		  "last": "Ostatnia"
-		},
-		"aria": {
-		  "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-		  "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-		}
-	  }
-	});
-  });
+{{ Html::script('/js/index.js') }}
 
+<script>
   function ConfirmDelete() {
-	var x = confirm("Czy na pewno chcesz usunąć te miasto? Jeżeli miasto jest gdzieś używane operacja nie powiedzie się.");
+	var x = confirm("Czy na pewno chcesz usunąć te miasto?");
 	if (x)
 	  return true;
 	else
 	  return false;
   }
 </script>
+
+@if (isset($success) || isset($error))
+  <script>
+	$(function () {
+	  setTimeout(function () {
+		$(".alert").hide(1000)
+	  }, 5000);
+	});
+  </script>
+@endif
 @endsection

@@ -20,7 +20,7 @@
 </div>
 @endif
 
-{{ Form::model($company, array('route' => array('company.update', $company->id), 'method' => 'PUT')) }}
+{{ Form::model($company, array('route' => array('companies.update', $company->id), 'method' => 'PUT')) }}
 {{ Form::token() }}
 
 <fieldset>

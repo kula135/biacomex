@@ -10,27 +10,14 @@ class Company extends Model {
   protected $fillable = ['nip'];
 
   public function city() {
-    return $this->belongsTo('App\City');
-  }
-  
-  public function setNipAttribute($value) {
-    $this->attributes['nip'] = str_replace('-', '', $value);
-  }
-  
-  public function getNipAttribute($value) {
-    return ($value==null ? '' : substr($value, 0, 3) . '-' . substr($value, 3, 3) . '-' . substr($value, 6, 2) . '-' . substr($value, 8, 2));
+	return $this->belongsTo('App\City');
   }
 
-  public function setCodeAttribute($value) {
-    $this->attributes['code'] = str_replace('-', '', $value);
-  }
-  
-  public function getCodeAttribute($value) {
-    return ($value==null ? '' : substr($value, 0, 2) . '-' . substr($value, 2));
-  }
-  
   public function clients() {
-    return $this->hasMany('App\Client');
+	return $this->hasMany('App\Client');
   }
-
+  
+  public function orders() {
+	return $this->hasMany('App\Order');
+  }
 }

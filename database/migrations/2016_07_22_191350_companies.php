@@ -14,12 +14,12 @@ class Companies extends Migration {
     Schema::create('companies', function(Blueprint $table) {
       $table->increments('id');
       $table->string('name');
-      $table->string('nip', 10)->unique();
+      $table->string('nip', 13)->unique();
       $table->string('address')->nullable();
-      $table->string('code', 5)->nullable();
+      $table->string('code', 6)->nullable();
       $table->unsignedInteger('city_id')->nullable();
       $table->timestamps();
-      $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+      $table->foreign('city_id')->references('id')->on('cities');
     });
   }
 

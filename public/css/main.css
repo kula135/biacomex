@@ -1,26 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 2016-07-23, 00:46:16
-    Author     : Artur
-*/
-
-nav {
-  background-color: #2c97e7;
-}
-
-nav a {
-  color: #eeeeee;
-}
-
-.nav > li > a:hover {
-  color: #ffffff;
-  background-color: #0079bf;
-}
-
 div.container {
   max-width: 1024px;
 }
@@ -42,5 +19,46 @@ legend {
 }
 
 ul.pager a {
-  font-size: bold;
+  font-weight: bold;
+}
+
+.navbar {
+  background: #2c97e7;
+}
+
+.navbar li:hover a {
+  color: #ffffff;
+  background: #0079bf;
+}
+
+.navbar a {
+  color: #eeeeee;
+  display: block;
+  text-decoration: none;
+}
+
+.navbar ul li:hover ul {
+  visibility: visible;
+}
+
+.navbar ul ul {
+  list-style-type: none;
+  padding: 0;
+  position: absolute;
+  top: auto;
+  visibility: hidden;
+}
+
+.navbar ul ul li {
+  font-size: 12px;
+  width: 100px;
+}
+
+.navbar ul ul a {
+  background: #0079bf;
+  padding: 5px 10px;
+}
+
+.navbar li:hover li:hover a {
+  background: #2c97e7;
 }

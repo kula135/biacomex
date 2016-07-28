@@ -77,7 +77,7 @@ return [
 	],
 	'string' => 'The :attribute must be a string.',
 	'timezone' => 'The :attribute must be a valid zone.',
-	'unique' => 'The :attribute has already been taken.',
+	'unique' => 'W bazie istnieje już podana wartość pola :attribute.',
 	'url' => 'The :attribute format is invalid.',
 	/*
 	  |--------------------------------------------------------------------------
@@ -118,7 +118,7 @@ return [
 		'requestdate' => 'data otrzymania zamówienia',
 		'answerdate' => 'data wysłania odpowiedzi',
 		'nip' => 'nip',
-		'name' => 'nazwa firmy',
+		'name' => 'nazwa',
 		'code' => 'kod pocztowy'
 	],
 ];

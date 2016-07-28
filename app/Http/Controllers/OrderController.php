@@ -6,31 +6,15 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller {
 
-  /**
-   * Display a listing of orders.
-   *
-   * @return view orders.index
-   */
   public function index() {
     $orders = \App\Order::all();
     return view('orders.index', ['orders' => $orders, 'message' => \Request::input('message')]);
   }
 
-  /**
-   * Show the form for creating a new order.
-   *
-   * @return view orders.create
-   */
   public function create() {
     return view('orders.create');
   }
 
-  /**
-   * Store a newly created order.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return Redirect to index with message.
-   */
   public function store(Request $request) {
     $this->validate_order($request);
 
@@ -64,12 +48,6 @@ class OrderController extends Controller {
     return redirect()->action('OrderController@index', ['message' => 'Zlecenie zostało dodane']);
   }
 
-  /**
-   * Display the specified order.
-   *
-   * @param  int  $id identifier
-   * @return view orders.show
-   */
   public function show($id) {
     $order = \App\Order::find($id);
 
@@ -79,24 +57,11 @@ class OrderController extends Controller {
     return view('orders.show', ['order' => $order, 'previous' => $previous, 'next' => $next]);
   }
 
-  /**
-   * Show the form for editing the specified order.
-   *
-   * @param  int  $id identifier
-   * @return view order.edit
-   */
   public function edit($id) {
     $order = \App\Order::find($id);
     return view('orders.edit', ['order' => $order]);
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id identifier
-   * @return Redirect to index with message.
-   */
   public function update(Request $request, $id) {
     $this->validate_order($request);
 
@@ -130,12 +95,6 @@ class OrderController extends Controller {
     return redirect()->action('OrderController@index', ['message' => 'Zlecenie zostało zaktualizowane']);
   }
 
-  /**
-   * Remove the specified order.
-   *
-   * @param  int  $id identifier
-   * @return Redirect to index with message.
-   */
   public function destroy($id) {
     $order = \App\Order::find($id);
     $order->delete();
@@ -143,12 +102,6 @@ class OrderController extends Controller {
     return redirect()->action('OrderController@index', ['message' => 'Zlecenie zostało usunięte']);
   }
 
-  /**
-   * Validate order.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return validation message
-   */
   private function validate_order($request) {
 	$rules = [
                 'mail' => 'required|email',

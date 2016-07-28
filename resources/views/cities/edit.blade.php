@@ -1,6 +1,8 @@
 @extends('layout.master')
 
-@section('scripts_and_styles')
+@section('title', ' - miasta')
+
+@section('styles')
 {{ Html::style('/css/modify.css') }}
 @endsection
 
@@ -15,11 +17,6 @@
   </ul>
 </div>
 @endif
-
-<div class="alert alert-danger text-center">
-  <h3>Uwaga!!!</h3>
-  <p>Zmiana nazwy miasta, zaktualizuje tą nazwę we wszystkich zleceniach.</p>
-</div>
 
 {{ Form::model($city, array('route' => array('cities.update', $city->id), 'method' => 'PUT')) }}
 {{ Form::token() }}

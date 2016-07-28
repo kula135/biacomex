@@ -29,10 +29,10 @@ class Orders extends Migration {
       $table->date('requestdate')->nullable();
       $table->date('answerdate')->nullable();
       $table->timestamps();
-      $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-      $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-      $table->foreign('tripfrom_id')->references('id')->on('cities')->onDelete('cascade');
-      $table->foreign('tripto_id')->references('id')->on('cities')->onDelete('cascade');
+      $table->foreign('company_id')->references('id')->on('companies');
+      $table->foreign('client_id')->references('id')->on('clients');
+      $table->foreign('tripfrom_id')->references('id')->on('cities');
+      $table->foreign('tripto_id')->references('id')->on('cities');
     });
   }
 
