@@ -21,6 +21,10 @@ class Order extends Model {
   public function tripto() {
     return $this->belongsTo('App\City');
   }
+  
+  public function vias() {
+    return $this->hasMany('App\Via');
+  }
 
   public function setDateFromAttribute($value) {
     $this->attributes['datefrom'] = implode("-", array_reverse(explode("/", $value)));
@@ -38,6 +42,22 @@ class Order extends Model {
     $this->attributes['answerdate'] = implode("-", array_reverse(explode("/", $value)));
   }
 
+  public function getVia() {
+	$list = array();
+	foreach ($this->vias->sortBy('position') as $v) {
+	  array_push($list, $v->city->name);
+	}
+	return implode(' &#10142; ', $list);
+  }
+  
+  public function editVia() {
+	$list = array();
+	foreach ($this->vias->sortBy('position') as $v) {
+	  array_push($list, $v->city->name);
+	}
+	return "['".implode("','", $list)."']";
+  }
+  
   public function getDateFromAttribute($value) {
     return date('d/m/Y', strtotime($value));
   }
@@ -54,4 +74,4 @@ class Order extends Model {
     return date('d/m/Y', strtotime($value));
   }
 
-}
+	}

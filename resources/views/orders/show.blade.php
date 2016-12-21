@@ -25,6 +25,9 @@
   <legend>Trasa</legend>
   <strong>Z:</strong> {{ $order->tripfrom->name }}<br>
   <strong>Do:</strong> {{ $order->tripto->name }}<br>
+  @if ($order->getVia())
+  <strong>Przez:</strong> {{ $order->getVia() }}<br>
+  @endif
   <strong>Dystans:</strong> {{ $order->distance }}<br>
   <strong>Dodatkowe informacje:</strong> {!! nl2br(e($order->tripinfo)) !!}<br>
 </fieldset>

@@ -10,9 +10,9 @@ class City extends Model {
   protected $fillable = ['name'];
 
   public function setNameAttribute($value) {
-    $this->attributes['name'] = ucwords($value);
+	$this->attributes['name'] = ucwords($value);
   }
-  
+
   /* ========= RELACJE ======================= */
   public function company() {
 	return $this->hasMany('App\Company', 'city_id');
@@ -24,6 +24,10 @@ class City extends Model {
 
   public function tripto() {
 	return $this->hasMany('App\Order', 'tripto_id');
+  }
+
+  public function vias() {
+	return $this->hasMany('App\Via');
   }
 
 }

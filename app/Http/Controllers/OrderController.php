@@ -45,6 +45,18 @@ class OrderController extends Controller {
     $order->answerdate = $request->input('answerdate');
     $order->save();
 
+	$position = 1;
+	$via = 0;
+	while ($request->exists('via_'.++$via)) {
+	  if ($request->input('via_'.$via) != NULL) {
+		$via_obj = new \App\Via;
+		$via_obj->order()->associate($order);
+		$via_obj->position = $position;
+		$via_obj->city()->associate(\App\City::firstOrCreate(['name' => $request->input('via_'.$via)]));
+		$via_obj->save();
+		$position++;
+	  }
+	}
     return redirect()->action('OrderController@index', ['message' => 'Zlecenie zostało dodane']);
   }
 
@@ -92,6 +104,22 @@ class OrderController extends Controller {
     $order->answerdate = $request->input('answerdate');
     $order->save();
 
+	$position = 1;
+	$via = 0;
+	while ($request->exists('via_'.++$via)) {
+	  if ($request->input('via_'.$via) != NULL) {
+		$via_obj = \App\Via::firstOrCreate(['order_id' => $order->id, 'position' => $position]);
+		$via_obj->order()->associate($order);
+		$via_obj->city()->associate(\App\City::firstOrCreate(['name' => $request->input('via_'.$via)]));
+		$via_obj->save();
+		$position++;
+	  }
+	}
+	$del = \App\Via::where('order_id', '=', $order->id)->where('position' , '>=', $position)->get();
+	foreach ($del as $d) {
+	  $d->delete();
+	}
+	
     return redirect()->action('OrderController@index', ['message' => 'Zlecenie zostało zaktualizowane']);
   }
 

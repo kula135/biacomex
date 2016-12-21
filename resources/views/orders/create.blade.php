@@ -97,6 +97,9 @@
       </td>
     </tr>
   </table>
+  {{ Form::label('via', 'Przez') }}
+  {{ Form::button('Dodaj przez', ['id'=>'via', 'onclick' => 'addVia()']) }}
+
   {{ Form::label('distance', 'Dystans', ['class' => 'required']) }}
   {{ Form::text('distance', null, ['required' => true]) }}
 
@@ -176,6 +179,7 @@
 	findCity('city');
 	findCity('tripfrom');
 	findCity('tripto');
+	addVia();
 
 	new bsn.AutoSuggest('name', companies);
 	new bsn.AutoSuggest('mail', clients);
@@ -236,6 +240,19 @@
 	  }
 	});
   });
+  
+  var via = 0;
+  function addVia() {
+	via++;
+	var newInput = document.createElement("input");
+	newInput.setAttribute("type", "text");
+	newInput.setAttribute("id", "via_"+via);
+	newInput.setAttribute("name", "via_"+via);
+	newInput.setAttribute("placeholder", "Miejscowość "+via);
+	
+	$("#via").before($(newInput).fadeIn(500));
+	findCity('via_'+via);
+  }
 
   function findCity(name) {
 	var options = {
