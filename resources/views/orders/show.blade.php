@@ -37,6 +37,11 @@
   <strong>Do:</strong> {{ $order->dateto }}<br>
 </fieldset>
 <fieldset>
+  <legend>Data powrotu</legend>
+  <strong>Od:</strong> {{ $order->datebackfrom }}<br>
+  <strong>Do:</strong> {{ $order->datebackto }}<br>
+</fieldset>
+<fieldset>
   <legend>Szczegóły</legend>
   {{ $order->description ?: '-' }}
 </fieldset>

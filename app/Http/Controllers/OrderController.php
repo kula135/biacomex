@@ -36,6 +36,8 @@ class OrderController extends Controller {
     $order->distance = $request->input('distance');
     $order->datefrom = $request->input('datefrom');
     $order->dateto = $request->input('dateto');
+    $order->datebackfrom = $request->input('datebackfrom');
+    $order->datebackto = $request->input('datebackto');
     $order->description = $request->input('description');
     $order->count = $request->input('count');
     $order->vehicle = $request->input('vehicle');
@@ -95,6 +97,8 @@ class OrderController extends Controller {
     $order->distance = $request->input('distance');
     $order->datefrom = $request->input('datefrom');
     $order->dateto = $request->input('dateto');
+    $order->datebackfrom = $request->input('datebackfrom');
+    $order->datebackto = $request->input('datebackto');
     $order->description = $request->input('description');
     $order->count = $request->input('count');
     $order->vehicle = $request->input('vehicle');

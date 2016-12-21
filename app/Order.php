@@ -33,6 +33,14 @@ class Order extends Model {
   public function setDateToAttribute($value) {
     $this->attributes['dateto'] = implode("-", array_reverse(explode("/", $value)));
   }
+  
+  public function setDateBackFromAttribute($value) {
+    $this->attributes['datebackfrom'] = implode("-", array_reverse(explode("/", $value)));
+  }
+
+  public function setDateBackToAttribute($value) {
+    $this->attributes['datebackto'] = implode("-", array_reverse(explode("/", $value)));
+  }
 
   public function setRequestDateAttribute($value) {
     $this->attributes['requestdate'] = implode("-", array_reverse(explode("/", $value)));
@@ -63,6 +71,14 @@ class Order extends Model {
   }
 
   public function getDateToAttribute($value) {
+    return date('d/m/Y', strtotime($value));
+  }
+  
+  public function getDateBackFromAttribute($value) {
+    return date('d/m/Y', strtotime($value));
+  }
+
+  public function getDateBackToAttribute($value) {
     return date('d/m/Y', strtotime($value));
   }
 

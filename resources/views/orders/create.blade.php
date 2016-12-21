@@ -123,6 +123,22 @@
   </table>
 </fieldset>
 <fieldset>
+  <legend>Data powrotu</legend>
+  <table>
+    <tr>
+      <td>
+        {{ Form::label('datebackfrom', 'Od') }}
+        {{ Form::text('datebackfrom', null, ['id' => 'datebackfrom', 'placeholder' => 'dd/mm/rrrr']) }}
+      </td>
+      <td width="1%"></td>
+      <td>
+        {{ Form::label('datebackto', 'Do') }}
+        {{ Form::text('datebackto', null, ['id' => 'datebackto', 'placeholder' => 'dd/mm/rrrr']) }}
+      </td>
+    </tr>
+  </table>
+</fieldset>
+<fieldset>
   <legend>Szczegóły</legend>
   {{ Form::textarea('description') }}
 </fieldset>
@@ -208,6 +224,34 @@
 		$('#datefrom').datepicker("option", "maxDate", selected);
 		if ($('#datefrom').val() === '') {
 		  $('#datefrom').val(selected);
+		}
+	  }
+	});
+	
+	$("#datebackfrom").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#datebackto').datepicker("option", "minDate", selected);
+		if ($('#datebackto').val() === '') {
+		  $('#datebackto').val(selected);
+		}
+	  }
+	});
+
+	$("#datebackto").datepicker({
+	  dateFormat: "dd/mm/yy",
+	  changeMonth: true,
+	  changeYear: true,
+	  dayNamesMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+	  monthNamesShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	  onSelect: function (selected) {
+		$('#datebackfrom').datepicker("option", "maxDate", selected);
+		if ($('#datebackfrom').val() === '') {
+		  $('#datebackfrom').val(selected);
 		}
 	  }
 	});
